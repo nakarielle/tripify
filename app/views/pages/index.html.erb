@@ -4,12 +4,15 @@
 </script>
 
 
-
+<div id="tripform">
 <input id="placefinder"/><input type="text" id="datepicker" placeholder="Date" />
-
+<button id ="addplace">+</button>
+</div>
 
 
 <script>
+
+//autocomplete place names
   var options = {
     url: function(input) { 
         return "https://api.mapbox.com/geocoding/v5/mapbox.places/" + input + 
@@ -35,21 +38,28 @@
     onChooseEvent: function() {
       var coords = $('#placefinder').getSelectedItemData().center;
       var placeName = $('#placefinder').getSelectedItemData().place_name;
-     
-      console.log(coords);
-      console.log(placeName);
+
     }
   }
 };
 
 $("#placefinder").easyAutocomplete(options);
 
+//date picker widget
  $(function() {
     $("#datepicker").datepicker({
+    dateFormat: "dd-mm-yy",
     changeMonth: true,
     changeYear: true
     })
   });
+
+$('#addplace').on('click', function(event) {
+  var $newPlace = $('<p>').text($('#placefinder').val());
+  var $newDate = $('<span>').text(' ' + $('#datepicker').val());
+  $newPlace.append($newDate);
+  $('#tripform').append($newPlace);
+})
 
 
 </script>
