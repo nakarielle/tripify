@@ -1,6 +1,6 @@
 class TripsController < ApplicationController
 
 	def index
-		render "hello world"
+		render json: Trip.all
 	end
 end
