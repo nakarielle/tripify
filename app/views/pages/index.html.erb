@@ -9,8 +9,43 @@
 <button id ="addplace">+</button>
 </div>
 
+<div id="map">
+  
+</div>
 
 <script>
+// Map display
+$(document).ready(function() {
+  L.mapbox.accessToken = mapAccessKey;
+// Create a map in the div #map
+  L.mapbox.map('map', 'mapbox.streets').setView([0, 0], 2);
+});
+
+var geojson = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -77.0366048812866,
+          38.89784666877921
+        ]
+      },
+      "properties": {}
+    }
+  ]
+}
+
+//date picker widget
+ $(function() {
+    $("#datepicker").datepicker({
+    dateFormat: "dd-mm-yy",
+    changeMonth: true,
+    changeYear: true
+    })
+  });
 
 //autocomplete place names
   var options = {
@@ -38,21 +73,15 @@
     onChooseEvent: function() {
       var coords = $('#placefinder').getSelectedItemData().center;
       var placeName = $('#placefinder').getSelectedItemData().place_name;
-
+      var myLayer = L.mapbox.featureLayer().addTo(map);
+      myLayer.setGeoJSON(geojson);
+  
     }
   }
 };
 
 $("#placefinder").easyAutocomplete(options);
 
-//date picker widget
- $(function() {
-    $("#datepicker").datepicker({
-    dateFormat: "dd-mm-yy",
-    changeMonth: true,
-    changeYear: true
-    })
-  });
 
 $('#addplace').on('click', function(event) {
   var $newPlace = $('<p>').text($('#placefinder').val());
@@ -62,4 +91,6 @@ $('#addplace').on('click', function(event) {
 })
 
 
+
 </script>
+
