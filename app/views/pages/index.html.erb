@@ -112,7 +112,7 @@ function make_pie_chart() {
     var object = {};
     if (myPlaces[i+1] == undefined) {
       var today = new Date();
-      var secondDate = today.getDate() + (today.getMonth()+1) + today.getFullYear();
+      var secondDate = today.getDate()+"-" + (today.getMonth()+1)+"-" + today.getFullYear();
       var secondDateObj = new Date(secondDate);
       var diffDays = Math.round(Math.abs((secondDateObj.getTime() - firstDateObj.getTime())/(oneDay)));
       object['country'] = myPlaces[i].country;
