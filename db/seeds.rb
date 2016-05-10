@@ -25,13 +25,6 @@ url_length = 5
 
 10.times do 
 
-
-	# if Trip.find_by(edit_url: url) && Trip.find_by(disp_url: url)
-	# while !Trip.find_by(edit_url: url) && !Trip.find_by(disp_url: url) do 
-	# 	puts "find similar"
-	# 	url = gen_url(url_length)
-	# end
-
 	Trip.create(
 		edit_url: gen_url(url_length),
 		disp_url: gen_url(url_length))
