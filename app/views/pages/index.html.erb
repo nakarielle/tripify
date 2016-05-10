@@ -1,0 +1,55 @@
+<script>
+  var mapAccessKey = "<%= ENV['MAP_ACCESS_KEY'] %>";
+  // export MAP_ACCESS_KEY= in bash session & will need to enter into Heroku when deployed
+</script>
+
+
+
+<input id="placefinder"/><input type="text" id="datepicker" placeholder="Date" />
+
+
+
+<script>
+  var options = {
+    url: function(input) { 
+        return "https://api.mapbox.com/geocoding/v5/mapbox.places/" + input + 
+        ".json?types=place%2Ccountry%2Cregion&access_token=" + mapAccessKey;
+    },
+
+    getValue: "place_name",
+
+    ajaxSettings: {
+        dataType: "json"
+    },
+
+    listLocation: "features",
+
+    requestDelay: 300,
+
+    theme: "round",
+
+    placeholder: "Enter a place",
+
+    list: {
+
+    onChooseEvent: function() {
+      var coords = $('#placefinder').getSelectedItemData().center;
+      var placeName = $('#placefinder').getSelectedItemData().place_name;
+     
+      console.log(coords);
+      console.log(placeName);
+    }
+  }
+};
+
+$("#placefinder").easyAutocomplete(options);
+
+ $(function() {
+    $("#datepicker").datepicker({
+    changeMonth: true,
+    changeYear: true
+    })
+  });
+
+
+</script>
