@@ -1,7 +1,7 @@
-namespace :url_check do
+namespace :seed do
 
-	desc 'sdsdfdsf'
-	task :abc do
+	desc 'checking if url exist in Db'
+	task :url_check do
 
 		puts Trip.count
 	end
