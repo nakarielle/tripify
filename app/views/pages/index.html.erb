@@ -2,7 +2,7 @@
   var mapAccessKey = "<%= ENV['MAP_ACCESS_KEY'] %>";
   // export MAP_ACCESS_KEY= in bash session & will need to enter into Heroku when deployed
 </script>
-
+<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 
 <div id="tripform">
 <input id="placefinder"/><input type="text" id="datepicker" placeholder="Date" />
@@ -10,7 +10,11 @@
 </div>
 
 <div id="map">
-  
+
+</div>
+
+<div id="chart">
+
 </div>
 
 <script>
@@ -19,9 +23,7 @@ $(document).ready(function() {
   L.mapbox.accessToken = mapAccessKey;
 // Create a map in the div #map
   L.mapbox.map('map', 'mapbox.streets').setView([0, 0], 2);
-  console.log(geojson);
-  var myLayer = L.mapbox.featureLayer().addTo(map);
-  myLayer.setGeoJSON(geojson);
+  
 });
 
 //date picker widget
@@ -34,6 +36,7 @@ $(function() {
 });
 
 //autocomplete place names
+
 var options = {
   url: function(input) { 
     return "https://api.mapbox.com/geocoding/v5/mapbox.places/" + input + 
@@ -58,36 +61,84 @@ var options = {
     onChooseEvent: function() {
       var coords = $('#placefinder').getSelectedItemData().center;
       var placeName = $('#placefinder').getSelectedItemData().place_name;
+
     }
   }
 };
 
 $("#placefinder").easyAutocomplete(options);
 
-
 $('#addplace').on('click', function(event) {
   var $newPlace = $('<p>').text($('#placefinder').val());
   var $newDate = $('<span>').text(' ' + $('#datepicker').val());
   $newPlace.append($newDate);
   $('#tripform').append($newPlace);
-})
 
-var geojson = {
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -77.0366048812866,
-          38.89784666877921
-        ]
-      },
-      "properties": {}
+  var obj = {};
+  obj['date'] = $('#datepicker').val();
+  obj['country']= $('#placefinder').val();
+  myPlaces.push(obj);
+  make_pie_chart();
+});
+
+var myPlaces =[];
+
+function make_pie_chart() {
+  // clears chart every time a new city is added
+  $('#chart').empty();
+  var newarray =[];
+  for(var i=0;i<myPlaces.length;i++) {
+    var oneDay = 24*60*60*1000;
+    // creates date object
+    firstDate = myPlaces[i].date.split("-").reverse().join("-");
+    firstDateObj = new Date(firstDate);
+    var object = {};
+    if (myPlaces[i+1] == undefined) {
+      var today = new Date();
+      var secondDate = today.getDate() + (today.getMonth()+1) + today.getFullYear();
+      var secondDateObj = new Date(secondDate);
+      var diffDays = Math.round(Math.abs((secondDateObj.getTime() - firstDateObj.getTime())/(oneDay)));
+      object['country'] = myPlaces[i].country;
+      object['count'] = diffDays;
+      newarray.push(object);
     }
-  ]
+    else {
+      var secondDate = myPlaces[i+1].date.split("-").reverse().join("-");
+      var secondDateObj = new Date(secondDate);
+      // calculate no. of days
+      var diffDays = Math.round(Math.abs((secondDateObj.getTime() - firstDateObj.getTime())/(oneDay)));
+      object['country'] = myPlaces[i].country;
+      object['count'] = diffDays;
+      newarray.push(object);
+    }
+    console.log(newarray);
+  }
+    var width = 360;
+    var height = 360;
+    var radius = Math.min(width, height) / 2;
+    var color = d3.scale.ordinal().range(['#A60F2B', '#648C85', '#B3F2C9', '#528C18', '#C3F25C']);
+    var svg = d3.select('#chart')
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height)
+                .append('g')
+                .attr('transform', 'translate(' + (width / 2) +  ',' + (height / 2) + ')');
+    var arc = d3.svg.arc().outerRadius(radius);
+    var pie = d3.layout.pie().value(function(d) { return d.count; });
+    var path = svg.selectAll('path')
+                  .data(pie(newarray))
+                  .enter()
+                  .append('path')
+                  .attr('d', arc)
+                  .attr('fill', function(d, i) {
+                    return color(d.data.country);
+                  });
+
 }
 
 </script>
+
+<br>
+
+<a href="mailto:?subject=You've been Tripify'd&body=Check out my recent trip! [URL]"><i class="fa fa-envelope fa-2x" aria-hidden="true"></i></a>
 
