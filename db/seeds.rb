@@ -6,8 +6,8 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 require_relative 'city_coordinates.rb'
-Stop.destroy_all
-Trip.destroy_all
+# Stop.destroy_all
+# Trip.destroy_all
 
 def gen_url(length)
 	rand(36**length).to_s(36)
@@ -23,16 +23,22 @@ end
 
 url_length = 5
 
-10.times do 
+1000.times do 
+	edit_url = gen_url(url_length)
 
+	while url_exist?(edit_url) do 
+		puts "same edit_url found on #{edit_url}"
+		edit_url = gen_url(url_length)
+	end
 
-	# if Trip.find_by(edit_url: url) && Trip.find_by(disp_url: url)
-	# while !Trip.find_by(edit_url: url) && !Trip.find_by(disp_url: url) do 
-	# 	puts "find similar"
-	# 	url = gen_url(url_length)
-	# end
+	disp_url = gen_url(url_length)
+
+	while url_exist?(disp_url) do 
+		puts "same disp_url found on #{disp_url}"
+		disp_url = gen_url(url_length)
+	end
 
 	Trip.create(
-		edit_url: gen_url(url_length),
-		disp_url: gen_url(url_length))
+		edit_url: edit_url,
+		disp_url: disp_url)
 end
