@@ -21,9 +21,9 @@ ActiveRecord::Schema.define(version: 20160510041439) do
     t.float    "lat"
     t.float    "lng"
     t.float    "trip_id"
-    t.date     "arrived_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date     "arrived_at"
   end
 
   create_table "trips", force: :cascade do |t|
