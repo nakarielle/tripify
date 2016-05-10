@@ -6,7 +6,7 @@
 |name|
 |lat|
 |lng|
-|timstamp|
+|arrived_at|
 |trip_id|
 
 |trip|

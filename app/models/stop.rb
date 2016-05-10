@@ -1,3 +1,3 @@
 class Stop < ActiveRecord::Base
-	belong_to :trip
+	belongs_to :trip
 end
