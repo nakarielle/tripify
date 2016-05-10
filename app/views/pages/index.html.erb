@@ -19,7 +19,58 @@ $(document).ready(function() {
   L.mapbox.accessToken = mapAccessKey;
 // Create a map in the div #map
   L.mapbox.map('map', 'mapbox.streets').setView([0, 0], 2);
+  console.log(geojson);
+  var myLayer = L.mapbox.featureLayer().addTo(map);
+  myLayer.setGeoJSON(geojson);
 });
+
+//date picker widget
+$(function() {
+  $("#datepicker").datepicker({
+  dateFormat: "dd-mm-yy",
+  changeMonth: true,
+  changeYear: true
+  })
+});
+
+//autocomplete place names
+var options = {
+  url: function(input) { 
+    return "https://api.mapbox.com/geocoding/v5/mapbox.places/" + input + 
+    ".json?types=place%2Ccountry%2Cregion&access_token=" + mapAccessKey;
+  },
+
+  getValue: "place_name",
+
+  ajaxSettings: {
+      dataType: "json"
+  },
+
+  listLocation: "features",
+
+  requestDelay: 300,
+
+  theme: "round",
+
+  placeholder: "Enter a place",
+
+  list: {
+    onChooseEvent: function() {
+      var coords = $('#placefinder').getSelectedItemData().center;
+      var placeName = $('#placefinder').getSelectedItemData().place_name;
+    }
+  }
+};
+
+$("#placefinder").easyAutocomplete(options);
+
+
+$('#addplace').on('click', function(event) {
+  var $newPlace = $('<p>').text($('#placefinder').val());
+  var $newDate = $('<span>').text(' ' + $('#datepicker').val());
+  $newPlace.append($newDate);
+  $('#tripform').append($newPlace);
+})
 
 var geojson = {
   "type": "FeatureCollection",
@@ -37,60 +88,6 @@ var geojson = {
     }
   ]
 }
-
-//date picker widget
- $(function() {
-    $("#datepicker").datepicker({
-    dateFormat: "dd-mm-yy",
-    changeMonth: true,
-    changeYear: true
-    })
-  });
-
-//autocomplete place names
-  var options = {
-    url: function(input) { 
-        return "https://api.mapbox.com/geocoding/v5/mapbox.places/" + input + 
-        ".json?types=place%2Ccountry%2Cregion&access_token=" + mapAccessKey;
-    },
-
-    getValue: "place_name",
-
-    ajaxSettings: {
-        dataType: "json"
-    },
-
-    listLocation: "features",
-
-    requestDelay: 300,
-
-    theme: "round",
-
-    placeholder: "Enter a place",
-
-    list: {
-
-    onChooseEvent: function() {
-      var coords = $('#placefinder').getSelectedItemData().center;
-      var placeName = $('#placefinder').getSelectedItemData().place_name;
-      var myLayer = L.mapbox.featureLayer().addTo(map);
-      myLayer.setGeoJSON(geojson);
-  
-    }
-  }
-};
-
-$("#placefinder").easyAutocomplete(options);
-
-
-$('#addplace').on('click', function(event) {
-  var $newPlace = $('<p>').text($('#placefinder').val());
-  var $newDate = $('<span>').text(' ' + $('#datepicker').val());
-  $newPlace.append($newDate);
-  $('#tripform').append($newPlace);
-})
-
-
 
 </script>
 
