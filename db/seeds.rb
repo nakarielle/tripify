@@ -48,15 +48,15 @@ end
 Trip.all.each { |trip|
 	puts "creating stop on trip id : #{trip.id}"
 
-	(3..10).to _a.sample times do
+
+	(3..10).to_a.sample.times do
 		random_stop = @city.sample
-		new_stop = Stop.new
-			name: random_stop["name"],
-			lat: random_stop["lat"],
-			lng: random_stop["lng"],
-			trip_id: trip.id,
-			# random date between 1 day ago and 10 000 days ago
-			arrived_at: Time.now - rand(86400..(86400*10000))
+		puts random_stop
+		Stop.create(name: random_stop["name"],
+					lat: random_stop["lat"],
+					lng: random_stop["lng"],
+					trip_id: trip.id,
+					arrived_at: Time.now - rand(86400..(86400*10000)) )
 	end
 }
 
