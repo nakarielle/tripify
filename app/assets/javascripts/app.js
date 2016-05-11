@@ -85,6 +85,18 @@ var options = {
 
 
 var addPlace = function(event) {
+  //create a trip if first stop - make a check
+
+  var settings = {
+    url: '/trip/new',
+    method: 'post'
+  }
+  $.ajax(settings).done(function(response) {
+    console.log(response);
+  })
+
+  //add a stop 
+
   var $newPlace = $('<p>').text($('#placefinder').val());
   var $newDate = $('<span>').text(' ' + $('#datepicker').val());
   $newPlace.append($newDate);
