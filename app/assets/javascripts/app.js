@@ -1,6 +1,3 @@
-
-
-
 // Globals
 var tripifyMap;
 var lastChosenPlace = {
@@ -14,7 +11,7 @@ var myPlaces =[];
 $(document).ready(function() {
   L.mapbox.accessToken = mapAccessKey;
   tripifyMap = L.mapbox.map('map', 'mapbox.streets').setView([0, 0], 2);
-  $("#placefinder").easyAutocomplete(options);  
+  $("#placefinder").easyAutocomplete(options);
   $('#addplace').on('click', addPlace);
 });
 
@@ -47,15 +44,15 @@ var addPin = function(map) {
   }];
 
   var pinLayer = L.mapbox.featureLayer().addTo(map);
-  pinLayer.setGeoJSON(geojson);  
+  pinLayer.setGeoJSON(geojson);
 };
 
 
 
 //autocomplete place names
 var options = {
-  url: function(input) { 
-    return "https://api.mapbox.com/geocoding/v5/mapbox.places/" + input + 
+  url: function(input) {
+    return "https://api.mapbox.com/geocoding/v5/mapbox.places/" + input +
     ".json?types=place%2Ccountry%2Cregion&access_token=" + mapAccessKey;
   },
 
@@ -97,8 +94,10 @@ var addPlace = function(event) {
   obj['date'] = $('#datepicker').val();
   obj['country']= $('#placefinder').val();
   myPlaces.push(obj);
-  makePieChart();  
+  makePieChart();
   addPin(tripifyMap);
+  $('#placefinder').val('');
+  $('#datepicker').val('');
 };
 
 
@@ -114,22 +113,19 @@ var makePieChart = function() {
     var object = {};
     if (myPlaces[i+1] == undefined) {
       var today = new Date();
-      var secondDate = today.getDate() + (today.getMonth()+1) + today.getFullYear();
-      var secondDateObj = new Date(secondDate);
-      var diffDays = Math.round(Math.abs((secondDateObj.getTime() - firstDateObj.getTime())/(oneDay)));
-      object['country'] = myPlaces[i].country;
-      object['count'] = diffDays;
-      newarray.push(object);
+      var secondDate = today.getDate()+"-" + (today.getMonth()+1)+"-" + today.getFullYear();
+      var newSecondDate = secondDate.split("-").reverse().join("-");
+      var secondDateObj = new Date(newSecondDate);
     }
     else {
       var secondDate = myPlaces[i+1].date.split("-").reverse().join("-");
       var secondDateObj = new Date(secondDate);
       // calculate no. of days
-      var diffDays = Math.round(Math.abs((secondDateObj.getTime() - firstDateObj.getTime())/(oneDay)));
-      object['country'] = myPlaces[i].country;
-      object['count'] = diffDays;
-      newarray.push(object);
     }
+    var diffDays = Math.round(Math.abs((secondDateObj.getTime() - firstDateObj.getTime())/(oneDay)));
+    object['country'] = myPlaces[i].country;
+    object['count'] = diffDays;
+    newarray.push(object);
     console.log(newarray);
   }
     var width = 360;
@@ -152,7 +148,23 @@ var makePieChart = function() {
                   .attr('fill', function(d, i) {
                     return color(d.data.country);
                   });
+    var circle = d3.select("body")
+                   .append("svg")
+                   .attr('width', 100)
+                   .attr('height', 100)
+                   .selectAll('g')
+                   .data(newarray)
+                   .enter()
+                   .append('g')
+                   .append('circle')
+                   .attr('cx',20)
+                   .attr('cy',20)
+                   .attr('r',5)
+                   .attr('fill', function(d) {
+                     console.log(d);
+                     return color(d.country); })
+                   .text(function(d) {
+                     return d.country;
+                   });
 
 }
-
-
