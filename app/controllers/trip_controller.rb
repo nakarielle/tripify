@@ -40,7 +40,7 @@ class TripController < ApplicationController
 	end
 
 	def stop
-		render json: Trip.find_by(disp_url: params[:trip_id]).stop
+		render json: Trip.find_by(id: params[:trip_id]).stop
 	end
 
 	def add_stop
