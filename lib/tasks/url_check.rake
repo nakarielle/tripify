@@ -1,9 +1,11 @@
 namespace :seed do
 
 	desc 'checking if url exist in Db'
-	task :url_check do
+
+	task trip_count: [:environment] do
 
 		puts Trip.count
 	end
 
 end
+
