@@ -6,8 +6,11 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 require_relative 'city_coordinates.rb'
-# Stop.destroy_all
-# Trip.destroy_all
+Stop.destroy_all
+Trip.destroy_all
+
+# Length of url, 52521875 possible Url for a length of 5
+url_length = 5
 
 def gen_url(length)
 	rand(36**length).to_s(36)
@@ -21,9 +24,8 @@ def url_exist?(url)
 	end
 end
 
-url_length = 5
-
-1000.times do 
+# 
+20.times do 
 	edit_url = gen_url(url_length)
 
 	while url_exist?(edit_url) do 
@@ -38,7 +40,32 @@ url_length = 5
 		disp_url = gen_url(url_length)
 	end
 
-	Trip.create(
-		edit_url: edit_url,
-		disp_url: disp_url)
+	Trip.create(edit_url: edit_url, disp_url: disp_url)
 end
+
+Trip.all.each { |trip|
+	puts "creating stop on trip id : #{trip.id}"
+
+	(3..10).to _a.sample times do
+		random_stop = @city.sample
+		new_stop = Stop.new
+			name: random_stop["name"],
+			lat: random_stop["lat"],
+			lng: random_stop["lng"],
+			trip_id: trip.id,
+			# random date between 1 day ago and 10 000 days ago
+			arrived_at: Time.now - rand(86400..(86400*10000))
+	end
+}
+
+
+# 86400 one day
+
+
+
+
+
+
+
+
+
