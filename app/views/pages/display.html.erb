@@ -17,6 +17,26 @@
 </div>
 
 <script>
-	
 
+  var geojson = 
+  {
+    "type": "FeatureCollection",
+<% @stops.each_index do |index| %>
+    "features": [
+    	{
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [ <%= @stops[index].lat %>, <%= @stops[index].lng %>]
+        }
+      },
+      "properties": {
+          "marker-symbol": "airport",
+          "marker-size": "medium",
+          "marker-color": "#FF0000",
+          "title": "<%= "#{index+1} ~ #{@stops[index].name}" %>"
+        	},
+    	],
+<% end %>
+  };
 </script>
