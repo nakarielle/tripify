@@ -18,13 +18,44 @@
 </div>
 
 <script>
+// Globals
+var tripifyMap;
+var lastChosenPlace = {
+  lat: null,
+  long: null,
+  placeName: null
+};
+var myPlaces =[];
+
 // Map display
 $(document).ready(function() {
   L.mapbox.accessToken = mapAccessKey;
 // Create a map in the div #map
-  L.mapbox.map('map', 'mapbox.streets').setView([0, 0], 2);
-  
+  tripifyMap = L.mapbox.map('map', 'mapbox.streets').setView([0, 0], 2);  
 });
+
+var addPin = function(map) {
+  var geojson = [
+  {
+    "type": "FeatureCollection",
+    "features": [ {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [ lastChosenPlace.lat, lastChosenPlace.long ]
+        },
+        "properties": {
+          "marker-symbol": "airport",
+          "marker-size": "medium",
+          "marker-color": "#FF0000",
+          "title": lastChosenPlace.placeName
+        }
+    }]
+  }];
+
+  var pinLayer = L.mapbox.featureLayer().addTo(map);
+  pinLayer.setGeoJSON(geojson);  
+};
 
 //date picker widget
 $(function() {
@@ -62,6 +93,9 @@ var options = {
       var coords = $('#placefinder').getSelectedItemData().center;
       var placeName = $('#placefinder').getSelectedItemData().place_name;
 
+      lastChosenPlace.lat = coords[0];
+      lastChosenPlace.long = coords[1];
+      lastChosenPlace.placeName = placeName;
     }
   }
 };
@@ -78,10 +112,9 @@ $('#addplace').on('click', function(event) {
   obj['date'] = $('#datepicker').val();
   obj['country']= $('#placefinder').val();
   myPlaces.push(obj);
-  make_pie_chart();
+  make_pie_chart();  
+  addPin(tripifyMap);
 });
-
-var myPlaces =[];
 
 function make_pie_chart() {
   // clears chart every time a new city is added
@@ -140,5 +173,5 @@ function make_pie_chart() {
 
 <br>
 
-<a href="mailto:?subject=You've been Tripify'd&body=Check out my recent trip! [URL]"><i class="fa fa-envelope fa-2x" aria-hidden="true"></i></a>
+<a href="mailto:?subject=You've been Tripify'd&amp;body=Check out my recent trip! [URL]"><i class="fa fa-envelope fa-2x" aria-hidden="true"></i></a>
 
