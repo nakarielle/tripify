@@ -1,5 +1,6 @@
 // Globals
 var tripifyMap;
+var urlKey;
 var lastChosenPlace = {
   lat: null,
   long: null,
@@ -7,12 +8,19 @@ var lastChosenPlace = {
 };
 var myPlaces =[];
 
-// Map display & turn autocomplete on
+
+// Map display & get URL key & turn autocomplete on
 $(document).ready(function() {
+
+  getUrl();
+
   L.mapbox.accessToken = mapAccessKey;
   tripifyMap = L.mapbox.map('map', 'mapbox.streets').setView([0, 0], 2);
   $("#placefinder").easyAutocomplete(options);
-  $('#addplace').on('click', addPlace);
+
+  $('#addplace').on('click', function() {
+    addPlace(urlKey);
+  });
 });
 
 //date picker widget
@@ -24,6 +32,7 @@ $(function() {
   })
 });
 
+//add pin to map
 var addPin = function(map) {
   var geojson = [
   {
@@ -84,33 +93,48 @@ var options = {
 
 
 
-var addPlace = function(event) {
-  //create a trip if first stop - make a check
+var getUrl = function() {
+    $.ajax({
+    url: '/trip/new',
+    method: 'get'
+  }).done(function(key) {
+    urlKey = key.edit_url;
+  });
+}
+
+var addPlace = function(key) {
 
   var settings = {
-    url: '/trip/new',
+    url: '/trip/' + key,
+    data: {placeName: lastChosenPlace.placeName, long: lastChosenPlace.long, lat: lastChosenPlace.lat, date: $('#datepicker').val() },
     method: 'post'
   }
-  $.ajax(settings).done(function(response) {
-    console.log(response);
-  })
 
-  //add a stop 
+  $.ajax(settings).done(function(stop) {
+    console.log('add place');
+  //   var $newPlace = $('<p>').text($(stop.placeName);
+  //   var $newDate = $('<span>').text(' ' + stop.date);
+  //   $newPlace.append($newDate);
+  //   $('#tripform').append($newPlace
 
-  var $newPlace = $('<p>').text($('#placefinder').val());
-  var $newDate = $('<span>').text(' ' + $('#datepicker').val());
-  $newPlace.append($newDate);
-  $('#tripform').append($newPlace);
+  // //add a stop 
 
-  var obj = {};
-  obj['date'] = $('#datepicker').val();
-  obj['country']= $('#placefinder').val();
-  myPlaces.push(obj);
-  makePieChart();
-  addPin(tripifyMap);
-  $('#placefinder').val('');
-  $('#datepicker').val('');
-};
+  // var $newPlace = $('<p>').text($('#placefinder').val());
+  // var $newDate = $('<span>').text(' ' + $('#datepicker').val());
+  // $newPlace.append($newDate);
+  // $('#tripform').append($newPlace);
+
+  // var obj = {};
+  // obj['date'] = $('#datepicker').val();
+  // obj['country']= $('#placefinder').val();
+  // myPlaces.push(obj);
+  // makePieChart();
+  // addPin(tripifyMap);
+  // $('#placefinder').val('');
+  // $('#datepicker').val('');
+});
+}
+
 
 
 var makePieChart = function() {
