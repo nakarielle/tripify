@@ -118,22 +118,10 @@ var addPlace = function(key) {
     $('#tripform').append($newPlace);
     addPin(stop.lat,stop.lng,stop.name);
     makePieChart(stop.lat,stop.lng,stop.name,stop.arrived_at);
-    });
-  }
+  });
+}
 
 
-
-
-  // var obj = {};
-  // obj['date'] = $('#datepicker').val();
-  // obj['country']= $('#placefinder').val();
-  // myPlaces.push(obj);
-  // makePieChart();
-  // addPin(tripifyMap);
-  // $('#placefinder').val('');
-  // $('#datepicker').val('');
-// });
-// }
 
 
 
