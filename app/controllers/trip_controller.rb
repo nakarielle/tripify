@@ -37,6 +37,23 @@ class TripController < ApplicationController
 		new_trip = Trip.create(edit_url: edit_url, disp_url: disp_url)
 
 		render json: new_trip
+	end
 
+	def stop
+		render json: Trip.find_by(disp_url: params[:trip_id]).stop
+	end
+
+	def add_stop
+		new_stop = Stop.create(
+								trip_id: params[:trip_id],
+								name: params[:name],
+								lat: params[:lat],
+								lng: params[:lng],
+								arrived_at: params[:arrived_at]
+								)
+		puts "new stop created "
+		puts new_stop
+
+		render json: new_stop
 	end
 end
