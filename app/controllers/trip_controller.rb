@@ -40,7 +40,10 @@ class TripController < ApplicationController
 	end
 
 	def stop
-		render json: Trip.find_by(id: params[:trip_id]).stop
+		# use this to get a timestamp
+		# render json: Trip.find_by(id: params[:trip_id]).stop.first.arrived_at.to_datetime.to_i
+		# use this to get all the stop from a trip
+		render json: Trip.find_by(id: params[:trip_id]).stops.order(:arrived_at)
 	end
 
 	def add_stop
