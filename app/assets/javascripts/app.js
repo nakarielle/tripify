@@ -3,15 +3,14 @@ var tripifyMap;
 var urlKey;
 var lastChosenPlace = {
   lat: null,
-  long: null,
-  placeName: null
+  lng: null,
+  name: null
 };
 var myPlaces =[];
 
 
 // Map display & get URL key & turn autocomplete on
 $(document).ready(function() {
-
   getUrl();
 
   L.mapbox.accessToken = mapAccessKey;
@@ -33,7 +32,7 @@ $(function() {
 });
 
 //add pin to map
-var addPin = function(map) {
+var addPin = function(lat,lng,name) {
   var geojson = [
   {
     "type": "FeatureCollection",
@@ -41,18 +40,18 @@ var addPin = function(map) {
         "type": "Feature",
         "geometry": {
           "type": "Point",
-          "coordinates": [ lastChosenPlace.lat, lastChosenPlace.long ]
+          "coordinates": [ lat, lng ]
         },
         "properties": {
           "marker-symbol": "airport",
           "marker-size": "medium",
           "marker-color": "#FF0000",
-          "title": lastChosenPlace.placeName
+          "title": name
         }
     }]
   }];
 
-  var pinLayer = L.mapbox.featureLayer().addTo(map);
+  var pinLayer = L.mapbox.featureLayer().addTo(tripifyMap);
   pinLayer.setGeoJSON(geojson);
 };
 
@@ -85,12 +84,11 @@ var options = {
       var placeName = $('#placefinder').getSelectedItemData().place_name;
 
       lastChosenPlace.lat = coords[0];
-      lastChosenPlace.long = coords[1];
-      lastChosenPlace.placeName = placeName;
+      lastChosenPlace.lng = coords[1];
+      lastChosenPlace.name = placeName;
     }
   }
 };
-
 
 
 var getUrl = function() {
@@ -102,27 +100,29 @@ var getUrl = function() {
   });
 }
 
+
+
 var addPlace = function(key) {
 
   var settings = {
     url: '/trip/' + key,
-    data: {placeName: lastChosenPlace.placeName, long: lastChosenPlace.long, lat: lastChosenPlace.lat, date: $('#datepicker').val() },
+    data: {name: lastChosenPlace.name, lng: lastChosenPlace.lng, lat: lastChosenPlace.lat, arrived_at: $('#datepicker').val() },
     method: 'post'
   }
 
   $.ajax(settings).done(function(stop) {
-    console.log('add place');
-  //   var $newPlace = $('<p>').text($(stop.placeName);
-  //   var $newDate = $('<span>').text(' ' + stop.date);
-  //   $newPlace.append($newDate);
-  //   $('#tripform').append($newPlace
+    console.log(stop);
+    var $newPlace = $('<p>').text(stop.name);
+    var $newDate = $('<span>').text(' ' + stop.arrived_at.split("-").reverse().join("/"));
+    $newPlace.append($newDate);
+    $('#tripform').append($newPlace);
+    addPin(stop.lat,stop.lng,stop.name);
+    makePieChart(stop.lat,stop.lng,stop.name,stop.arrived_at);
+    });
+  }
 
-  // //add a stop 
 
-  // var $newPlace = $('<p>').text($('#placefinder').val());
-  // var $newDate = $('<span>').text(' ' + $('#datepicker').val());
-  // $newPlace.append($newDate);
-  // $('#tripform').append($newPlace);
+
 
   // var obj = {};
   // obj['date'] = $('#datepicker').val();
@@ -132,12 +132,12 @@ var addPlace = function(key) {
   // addPin(tripifyMap);
   // $('#placefinder').val('');
   // $('#datepicker').val('');
-});
-}
+// });
+// }
 
 
 
-var makePieChart = function() {
+var makePieChart = function(lat,long,name,date) {
   // clears chart every time a new city is added
   $('#chart').empty();
   var newarray =[];
