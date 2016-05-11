@@ -3,7 +3,10 @@
   top:0;
   right: 0;
   width:70%;
-  height: 50%;
+  height: 80%;
+}
+.leaflet-bottom {
+  display: none;
 }
 .easy-autocomplete {
   display: inline-block;
@@ -26,3 +29,4 @@
 #placefinderDiv input {
   width:160px;
 }
+

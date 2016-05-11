@@ -9,4 +9,5 @@ Rails.application.routes.draw do
   get '/trip/:trip_id' => "trip#stop"
   post '/trip/:trip_id' => "trip#add_stop"
 
+  get '/:disp_url' => "pages#display"
 end
