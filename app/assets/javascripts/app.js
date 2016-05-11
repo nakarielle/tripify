@@ -1,5 +1,5 @@
 
-var mapAccessKey = "<%= ENV['MAP_ACCESS_KEY'] %>";
+
 
 // Globals
 var tripifyMap;
@@ -50,14 +50,7 @@ var addPin = function(map) {
   pinLayer.setGeoJSON(geojson);  
 };
 
-//date picker widget
-$(function() {
-  $("#datepicker").datepicker({
-  dateFormat: "dd-mm-yy",
-  changeMonth: true,
-  changeYear: true
-  })
-});
+
 
 //autocomplete place names
 var options = {

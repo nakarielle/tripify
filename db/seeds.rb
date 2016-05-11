@@ -9,6 +9,9 @@ require_relative 'city_coordinates.rb'
 Stop.destroy_all
 Trip.destroy_all
 
+# Length of url, 52521875 possible Url for a length of 5
+url_length = 5
+
 def gen_url(length)
 	rand(36**length).to_s(36)
 end
@@ -21,18 +24,50 @@ def url_exist?(url)
 	end
 end
 
-url_length = 5
+# 
+20.times do 
+	# generating edit url 
+	edit_url = gen_url(url_length)
 
-10.times do 
+	while url_exist?(edit_url) do 
+		puts "same edit_url found on #{edit_url}"
+		edit_url = gen_url(url_length)
+	end
+	
+	# generating disp url
+	disp_url = gen_url(url_length)
 
+	while url_exist?(disp_url) do 
+		puts "same disp_url found on #{disp_url}"
+		disp_url = gen_url(url_length)
+	end
 
-	# if Trip.find_by(edit_url: url) && Trip.find_by(disp_url: url)
-	# while !Trip.find_by(edit_url: url) && !Trip.find_by(disp_url: url) do 
-	# 	puts "find similar"
-	# 	url = gen_url(url_length)
-	# end
-
-	Trip.create(
-		edit_url: gen_url(url_length),
-		disp_url: gen_url(url_length))
+	Trip.create(edit_url: edit_url, disp_url: disp_url)
 end
+
+Trip.all.each { |trip|
+	puts "creating stop on trip id : #{trip.id}"
+
+	(3..10).to _a.sample times do
+		random_stop = @city.sample
+		new_stop = Stop.new
+			name: random_stop["name"],
+			lat: random_stop["lat"],
+			lng: random_stop["lng"],
+			trip_id: trip.id,
+			# random date between 1 day ago and 10 000 days ago
+			arrived_at: Time.now - rand(86400..(86400*10000))
+	end
+}
+
+
+# 86400 one day
+
+
+
+
+
+
+
+
+
