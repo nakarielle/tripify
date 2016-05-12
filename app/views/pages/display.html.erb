@@ -1,0 +1,42 @@
+<script>
+  var mapAccessKey = "<%= ENV['MAP_ACCESS_KEY'] %>";
+  // export MAP_ACCESS_KEY= in bash session & will need to enter into Heroku when deployed
+</script>
+
+<h1>Display page</h1>
+<ul>
+<% @stops.each_index do |index| %>
+
+<p><%= " #{index+1} #{@stops[index].name} , arrived on #{@stops[index].arrived_at}" %></p>
+
+<% end %>
+</ul>
+
+<div id="map">
+
+</div>
+
+<script>
+
+  var geojson = 
+  {
+    "type": "FeatureCollection",
+<% @stops.each_index do |index| %>
+    "features": [
+    	{
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [ <%= @stops[index].lat %>, <%= @stops[index].lng %>]
+        }
+      },
+      "properties": {
+          "marker-symbol": "airport",
+          "marker-size": "medium",
+          "marker-color": "#FF0000",
+          "title": "<%= "#{index+1} ~ #{@stops[index].name}" %>"
+        	},
+    	],
+<% end %>
+  };
+</script>
