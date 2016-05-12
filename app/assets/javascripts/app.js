@@ -55,6 +55,20 @@ var addPin = function(lat,lng,name) {
   pinLayer.setGeoJSON(geojson);
 };
 
+var addSavedPins = function(id) {
+  
+
+  var settings = {
+    url: '/trip/' + id,
+    method: 'get'
+  }
+  $.ajax(settings).done(function(stops) {
+    stops.forEach(function(stop) {
+      addPin(stop.lat,stop.lng,stop.name);
+    })
+  })
+}
+
 
 
 //autocomplete place names
@@ -192,3 +206,6 @@ var makePieChart = function(lat,long,name,date) {
                    });
 
 }
+
+
+

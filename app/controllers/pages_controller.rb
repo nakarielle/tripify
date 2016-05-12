@@ -20,6 +20,7 @@ class PagesController < ApplicationController
 	        }
 	    }]
 	  	}].to_json
+      @trip_id = Trip.find_by(disp_url: params[:disp_url])
   end
 end
 
