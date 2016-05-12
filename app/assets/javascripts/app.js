@@ -56,8 +56,6 @@ var addPin = function(lat,lng,name) {
 };
 
 var addSavedPins = function(id) {
-  
-
   var settings = {
     url: '/trip/' + id,
     method: 'get'
