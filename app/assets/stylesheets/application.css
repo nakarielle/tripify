@@ -14,5 +14,6 @@
  *= require jquery-ui.theme.min.css
  *= require style.css
  *= require easy-autocomplete.min.css
+ *= require layout.css
  *= require_self
  */
