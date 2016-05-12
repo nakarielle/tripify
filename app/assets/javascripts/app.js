@@ -193,10 +193,19 @@ var makePieChart = function(lat,lng,name,date) {
                 .append('svg')
                 .attr('width', 1000)
                 .attr('height', 120);
-    var bar = svg1.append('rect')
+    var bar = svg1.append("g").append('rect')
                   .attr('height',50)
                   .attr('width',distance/500);
-
+    var transform1 = svg1.selectAll("g")
+                       .append('text')
+                       .attr('color','black')
+                       .attr("font-size", "30px")
+                       .attr("transform", 'translate(20,20)')
+                       .text(function() {
+                         if (myPlaces.length >=2)
+                         return Math.floor(distance) + " Kms"
+                       });
+    var transform2 = bar.attr('transform','translate(20,50)');
 
 }
 
@@ -216,4 +225,3 @@ function calcCrow(lat1, lon1, lat2, lon2) {
 function toRad(Value) {
     return Value * Math.PI / 180;
 }
-
