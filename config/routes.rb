@@ -10,5 +10,5 @@ Rails.application.routes.draw do
   post '/trip/:trip_id' => "trip#add_stop"
 
   get '/:disp_url' => "pages#display"
-  get '/:edit_url' => "pages#edit"
+  get '/:edit_url/edit' => "pages#edit"
 end
