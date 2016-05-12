@@ -14,7 +14,6 @@ var distance = 0;
 
 // Map display & get URL key & turn autocomplete on
 $(document).ready(function() {
-  getUrl();
 
   L.mapbox.accessToken = mapAccessKey;
   tripifyMap = L.mapbox.map('map', 'mapbox.streets').setView([20, 20], 2);
@@ -27,10 +26,11 @@ $(document).ready(function() {
   // tripifyMap.
   $("#placefinder").easyAutocomplete(options);
   $('#addplace').on('click', function() {
+    tripObject == undefined ?  getUrl(): console.log("new trip already generated");
     addPlace(tripId);
     console.log(tripObject.disp_url);
-    $('#url-info').append($('<p>').text("Display Only Url : " + tripObject.disp_url))
   });
+  addSavedData(tripId);
 });
 
 //date picker widget
@@ -125,15 +125,17 @@ var getUrl = function() {
     editUrl = trip.edit_url;
     tripId = trip.id;
     tripObject = trip;
+    // display Url on the page
+    $('#url-info').append($('<p>').text("Display Only Url : " + tripObject.disp_url))
   });
 }
 
 
 
-var addPlace = function(key) {
+var addPlace = function(tripId) {
 
   var settings = {
-    url: '/trip/' + key,
+    url: '/trip/' + tripId,
     data: {name: lastChosenPlace.name, lng: lastChosenPlace.lng, lat: lastChosenPlace.lat, arrived_at: $('#datepicker').val() },
     method: 'post'
   }

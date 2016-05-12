@@ -36,3 +36,15 @@ body {
 .ui-widget-header {
   background-color: grey;
 }*/
+
+h1,
+h2,
+h3, 
+h4{
+  display: inherit;
+  justify-content: inherit;
+}
+
+.title {
+  flex-direction: column;
+}
