@@ -183,6 +183,7 @@ var makePieChart = function(lat,lng,name,date) {
                 .append('g')
                 .attr('transform', 'translate(' + (width / 2) +  ',' + (height / 2) + ')');
     var arc = d3.svg.arc().outerRadius(radius).innerRadius(30);
+    var text = svg.append("text");
     var arcout = d3.svg.arc().outerRadius(radius+50).innerRadius(30);
     var pie = d3.layout.pie().value(function(d) {console.log(d); return d.count; });
     var animation = d3.interpolate(function(d) {console.log(d); return d.count; });
@@ -191,6 +192,7 @@ var makePieChart = function(lat,lng,name,date) {
                   .enter()
                   .append('path')
                   .attr('d', arc)
+                  .attr('id',function(d) {return d.data.country;})
                   .attr('fill', function(d,i) {
                     return color(d.data.country);
                   }).on('mouseover',function(d) {
@@ -200,6 +202,7 @@ var makePieChart = function(lat,lng,name,date) {
                           .attr("d", arcout);
                         svg.append('text')
                           .text(d.data.country)
+                          .attr('class','country')
                           .style('color','white')
                           .attr('transform', 'translate(-25,0)');
                   }).on('mouseout', function(d) {
@@ -207,8 +210,17 @@ var makePieChart = function(lat,lng,name,date) {
                           .transition()
                           .duration(1000)
                           .attr('d', arc);
-                        svg.selectAll('text').remove();
+                        svg.selectAll('.country')
+                           .remove();
                   });
+    var days = text.selectAll('textPath')
+                  .data(newarray)
+                  .enter()
+                  .append('textPath')
+                  .attr('xlink:href',function(d) {return '#'+d.country;})
+                  .text(function(d){return d.count;})
+                  .style('font-size','20px')
+                  .attr("startOffset",'.05');
     var svg1 = d3.select('#barchart')
                 .append('svg')
                 .attr('width', 1000)
