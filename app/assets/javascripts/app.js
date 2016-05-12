@@ -15,14 +15,13 @@ $(document).ready(function() {
   getUrl();
 
   L.mapbox.accessToken = mapAccessKey;
-  tripifyMap = L.mapbox.map('map', 'mapbox.streets').setView([20, 20], 2);
+  tripifyMap = L.mapbox.map('map', 'mapbox.streets').setView([20, 150], 2);
   // Disable drag and zoom handlers.
   tripifyMap.dragging.disable();
   tripifyMap.touchZoom.disable();
   tripifyMap.doubleClickZoom.disable();
   tripifyMap.scrollWheelZoom.disable();
   tripifyMap.keyboard.disable();
-  tripifyMap.tap.disable();
   $("#placefinder").easyAutocomplete(options);
   $('#addplace').on('click', function() {
     addPlace(urlKey);

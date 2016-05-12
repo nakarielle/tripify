@@ -3,17 +3,23 @@
   // export MAP_ACCESS_KEY= in bash session & will need to enter into Heroku when deployed
 </script>
 <div class="flex-container">
-	<div class="left-panel">
-		<h1>Welcome to Tripify!</h1>
+	<div class="left-panel fill-gray">
+		<div class="title">
+			<h1>Welcome to Tripify!</h1>
+		</div>
 		<div id="tripform">
 			<div id="placefinderDiv">
 				<label>Travelling to:</label>
-				<input id="placefinder"/>
+				<fieldset class='with-icon'>
+					<input type='text' value='' id="placefinder"/>
+				</fieldset>
 			</div>
 			<div id="datepickerDiv">
 				<label>Arriving:</label>
-				<input type="text" id="datepicker" placeholder="Date" />
-				<button id ="addplace">+</button>
+				<fieldset class='with-icon'>
+			  <input type='text' id="datepicker" placeholder="Date" />
+			  <button class='button icon plus loud' id ="addplace">Add</button>
+				</fieldset>
 			</div>
 		</div>
 	</div>
