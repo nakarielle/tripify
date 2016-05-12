@@ -196,6 +196,8 @@ var makePieChart = function(lat,lng,name,date) {
     var bar = svg1.append("g").append('rect')
                   .attr('height',50)
                   .attr('width',distance/500)
+                  .transition().delay(3)
+                  .duration(300)
                   .style('fill',function() {
                     if (distance<30000)
                     {
@@ -211,12 +213,11 @@ var makePieChart = function(lat,lng,name,date) {
     var transform1 = svg1.selectAll("g")
                        .append('text')
                        .attr("font-size", "30px")
-                       .attr("transform", 'translate(20,20)')
+                       .attr("transform", 'translate(10,80)')
                        .text(function() {
                          if (myPlaces.length >=2)
                          return Math.floor(distance) + " Kms"
                        });
-    var transform2 = bar.attr('transform','translate(20,50)');
 
 }
 
