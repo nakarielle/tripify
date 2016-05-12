@@ -46,7 +46,7 @@ var addPin = function(lat,lng,name) {
         "properties": {
           "marker-symbol": "airport",
           "marker-size": "medium",
-          "marker-color": "#FF0000",
+          "marker-color": "#0000FF",
           "title": name
         }
     }]
@@ -92,7 +92,7 @@ var options = {
 
   theme: "round",
 
-  placeholder: "Enter a place",
+  placeholder: "Enter first destination",
 
   list: {
     onChooseEvent: function() {
@@ -127,13 +127,17 @@ var addPlace = function(key) {
   }
 
   $.ajax(settings).done(function(stop) {
-    console.log(stop)
+    //display text for place
     var $newPlace = $('<p>').text(stop.name);
     var $newDate = $('<span>').text(' ' + stop.arrived_at.split("-").reverse().join("/"));
     $newPlace.append($newDate);
     $('#tripform').append($newPlace);
+
     addPin(stop.lat,stop.lng,stop.name);
     makePieChart(stop.lat,stop.lng,stop.name,stop.arrived_at);
+    //reset input boxes
+    $('#placefinder').attr("placeholder", "Enter next destination").val("").focus().blur();
+    $('#datepicker').attr("placeholder", "Date").val("");
   });
 }
 
