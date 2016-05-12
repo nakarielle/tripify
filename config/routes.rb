@@ -2,8 +2,7 @@ Rails.application.routes.draw do
 
 
   get '/' => 'pages#index'
-  get '/layout' => 'pages#layout'
-
+  get '/l' => 'pages#layout'
   get '/trip' => "trip#index"
   get '/trip/new' => "trip#create"
 
