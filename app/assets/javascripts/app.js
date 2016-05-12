@@ -168,9 +168,9 @@ var makePieChart = function(lat,lng,name,date) {
       distance = distance + calcCrow(myPlaces[i].lat,myPlaces[i].lng,myPlaces[i+1].lat,myPlaces[i+1].lng);
     }
   }
-    var width = 360;
-    var height = 360;
-    var radius = Math.min(width, height) / 2;
+    var width = 400;
+    var height = 400;
+    var radius = Math.min(width, height) / 4;
     var color = d3.scale.ordinal().range(['#2ca02c','#5254a3','#1f77b4','#9c9ede','#a55194','#e7ba52','#bcbddc','#A60F2B', '#B3F2C9', '#528C18', '#C3F25C']);
     var svg = d3.select('#chart')
                 .append('svg')
@@ -178,16 +178,32 @@ var makePieChart = function(lat,lng,name,date) {
                 .attr('height', height)
                 .append('g')
                 .attr('transform', 'translate(' + (width / 2) +  ',' + (height / 2) + ')');
-    var arc = d3.svg.arc().outerRadius(radius);
+    var arc = d3.svg.arc().outerRadius(radius).innerRadius(30);
+    var arcout = d3.svg.arc().outerRadius(radius+50).innerRadius(30);
     var pie = d3.layout.pie().value(function(d) {console.log(d); return d.count; });
+    var animation = d3.interpolate(function(d) {console.log(d); return d.count; });
     var path = svg.selectAll('path')
                   .data(pie(newarray))
                   .enter()
                   .append('path')
                   .attr('d', arc)
                   .attr('fill', function(d,i) {
-                    console.log(d.data);
                     return color(d.data.country);
+                  }).on('mouseover',function(d) {
+                        d3.select(this)
+                          .transition()
+                          .duration(1000)
+                          .attr("d", arcout);
+                        svg.append('text')
+                          .text(d.data.country)
+                          .style('color','white')
+                          .attr('transform', 'translate(-25,0)');
+                  }).on('mouseout', function(d) {
+                        d3.select(this)
+                          .transition()
+                          .duration(1000)
+                          .attr('d', arc);
+                        svg.selectAll('text').remove();
                   });
     var svg1 = d3.select('#barchart')
                 .append('svg')
