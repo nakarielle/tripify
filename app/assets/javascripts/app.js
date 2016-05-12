@@ -1,6 +1,8 @@
 // Globals
 var tripifyMap;
-var urlKey;
+var editUrl;
+var tripObject;
+var tripId;
 var lastChosenPlace = {
   lat: null,
   lng: null,
@@ -15,16 +17,19 @@ $(document).ready(function() {
   getUrl();
 
   L.mapbox.accessToken = mapAccessKey;
-  tripifyMap = L.mapbox.map('map', 'mapbox.streets').setView([20, 150], 2);
+  tripifyMap = L.mapbox.map('map', 'mapbox.streets').setView([20, 20], 2);
   // Disable drag and zoom handlers.
   tripifyMap.dragging.disable();
   tripifyMap.touchZoom.disable();
   tripifyMap.doubleClickZoom.disable();
   tripifyMap.scrollWheelZoom.disable();
   tripifyMap.keyboard.disable();
+  // tripifyMap.
   $("#placefinder").easyAutocomplete(options);
   $('#addplace').on('click', function() {
-    addPlace(urlKey);
+    addPlace(tripId);
+    console.log(tripObject.disp_url);
+    $('#url-info').append($('<p>').text("Display Only Url : " + tripObject.disp_url))
   });
 });
 
@@ -118,8 +123,10 @@ var getUrl = function() {
     $.ajax({
     url: '/trip/new',
     method: 'get'
-  }).done(function(key) {
-    urlKey = key.edit_url;
+  }).done(function(trip) {
+    editUrl = trip.edit_url;
+    tripId = trip.id;
+    tripObject = trip;
   });
 }
 
