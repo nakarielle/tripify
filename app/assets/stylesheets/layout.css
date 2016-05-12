@@ -16,7 +16,7 @@
 .map, .graph {
 		flex: 1 0 0; 
 }
-# {
+#map {
 	position: relative;
     top: 0;
     right: 0;
