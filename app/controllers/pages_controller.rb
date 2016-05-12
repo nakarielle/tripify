@@ -4,7 +4,8 @@ class PagesController < ApplicationController
   end
 
   def display
-  	@stops = Trip.find_by(disp_url: params[:disp_url]).stops.order(:arrived_at)
+  	trip = Trip.find_by(disp_url: params[:disp_url])
+  	@stops = trip.stops.order(:arrived_at)
  		@geo_json = [{
 	    "type" => "FeatureCollection",
 	    "features" => [{
@@ -20,6 +21,7 @@ class PagesController < ApplicationController
 	        }
 	    }]
 	  	}].to_json
+	  @trip_id = trip.id
   end
 end
 

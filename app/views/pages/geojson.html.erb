@@ -1,0 +1,19 @@
+  var geojson = 
+  {
+    "type": "FeatureCollection",
+    "features": [
+<% @stops.each_index do |index| %>
+     {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [ <%= @stops[index].lat %>, <%= @stops[index].lng %>]
+      	},
+      "properties": {
+          "marker-symbol": "airport",
+          "marker-size": "medium",
+          "marker-color": "#FF0000",
+          "title": "<%= "#{index+1} ~ #{@stops[index].name}" %>"
+        	}
+    	}<%= "," if index < @stops.size - 1 %>
+<% end %>];
