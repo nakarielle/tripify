@@ -4,19 +4,25 @@
 </script>
 
 <h1>Display page</h1>
-<ul>
-<% @stops.each_index do |index| %>
 
-<p><%= " #{index+1} #{@stops[index].name} , arrived on #{@stops[index].arrived_at}" %></p>
-
-<% end %>
-</ul>
+<div id="triplist"></div>
 
 <div id="map">
 
 </div>
 
-<script>
+<div id="chart">
 
-var tripID = <%= @trip_id%> ;
+</div>
+
+<div id="barchart">
+
+</div>
+
+<a href="mailto:?subject=You've been Tripify'd&amp;body=Check out my recent trip! http://localhost:3000/<%= @trip.disp_url %>"><i class="fa fa-envelope fa-2x" aria-hidden="true"></i></a>
+
+<script>
+  var tripId = <%= @trip.id %>;
+  addSavedData(tripId);
+
 </script>

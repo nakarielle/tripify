@@ -56,6 +56,21 @@ var addPin = function(lat,lng,name) {
   pinLayer.setGeoJSON(geojson);
 };
 
+//display page
+var addSavedData = function(id) {
+  var settings = {
+    url: '/trip/' + id,
+    method: 'get'
+  }
+  $.ajax(settings).done(function(stops) {
+    stops.forEach(function(stop) {
+      addPin(stop.lat,stop.lng,stop.name);
+      makePieChart(stop.lat,stop.lng,stop.name,stop.arrived_at);
+    var $place = $('<p>').text(stop.name + ' ' + stop.arrived_at.split("-").reverse().join("/"));
+    $('#triplist').append($place);
+    })
+  })
+}
 
 
 //autocomplete place names
@@ -112,22 +127,23 @@ var addPlace = function(key) {
   }
 
   $.ajax(settings).done(function(stop) {
+    console.log(stop)
     var $newPlace = $('<p>').text(stop.name);
     var $newDate = $('<span>').text(' ' + stop.arrived_at.split("-").reverse().join("/"));
     $newPlace.append($newDate);
     $('#tripform').append($newPlace);
     addPin(stop.lat,stop.lng,stop.name);
-    var obj = {};
-    obj['date'] = stop.arrived_at;
-    obj['country'] = stop.name;
-    obj['lat'] = stop.lat;
-    obj['lng'] = stop.lng;
-    myPlaces.push(obj);
     makePieChart(stop.lat,stop.lng,stop.name,stop.arrived_at);
   });
 }
 
-var makePieChart = function(lat,long,name,date) {
+var makePieChart = function(lat,lng,name,date) {
+    var obj = {};
+    obj['date'] = date;
+    obj['country'] = name;
+    obj['lat'] = lat;
+    obj['lng'] = lng;
+    myPlaces.push(obj);
   // clears chart every time a new city is added
   $('#chart').empty();
   $('#barchart').empty();
@@ -148,6 +164,7 @@ var makePieChart = function(lat,long,name,date) {
       object['country'] = myPlaces[i].country;
       object['count'] = diffDays;
       newarray.push(object);
+      console.log(newarray);
       distance = distance + calcCrow(myPlaces[i].lat,myPlaces[i].lng,myPlaces[i+1].lat,myPlaces[i+1].lng);
     }
   }
@@ -162,25 +179,27 @@ var makePieChart = function(lat,long,name,date) {
                 .append('g')
                 .attr('transform', 'translate(' + (width / 2) +  ',' + (height / 2) + ')');
     var arc = d3.svg.arc().outerRadius(radius);
-    var pie = d3.layout.pie().value(function(d) { return d.count; });
+    var pie = d3.layout.pie().value(function(d) {console.log(d); return d.count; });
     var path = svg.selectAll('path')
                   .data(pie(newarray))
                   .enter()
                   .append('path')
                   .attr('d', arc)
                   .attr('fill', function(d,i) {
+                    console.log(d.data);
                     return color(d.data.country);
                   });
     var svg1 = d3.select('#barchart')
                 .append('svg')
                 .attr('width', 1000)
-                .attr('height', height);
+                .attr('height', 120);
     var bar = svg1.append('rect')
                   .attr('height',50)
                   .attr('width',distance/500);
 
 
 }
+
 function calcCrow(lat1, lon1, lat2, lon2) {
     var R = 6371; // km
     var dLat = toRad(lat2-lat1);
@@ -197,3 +216,4 @@ function calcCrow(lat1, lon1, lat2, lon2) {
 function toRad(Value) {
     return Value * Math.PI / 180;
 }
+
