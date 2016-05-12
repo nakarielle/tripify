@@ -33,7 +33,9 @@ $(function() {
   $("#datepicker").datepicker({
   dateFormat: "dd-mm-yy",
   changeMonth: true,
-  changeYear: true
+  changeYear: true,
+  yearRange: "1960:2020"
+
   })
 });
 
