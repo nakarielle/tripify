@@ -112,7 +112,6 @@ var addPlace = function(key) {
   }
 
   $.ajax(settings).done(function(stop) {
-    console.log(stop);
     var $newPlace = $('<p>').text(stop.name);
     var $newDate = $('<span>').text(' ' + stop.arrived_at.split("-").reverse().join("/"));
     $newPlace.append($newDate);
@@ -170,7 +169,7 @@ var makePieChart = function(lat,long,name,date) {
                   .append('path')
                   .attr('d', arc)
                   .attr('fill', function(d,i) {
-                    return color(i);
+                    return color(d.data.country);
                   });
     var svg1 = d3.select('#barchart')
                 .append('svg')
