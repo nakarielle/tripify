@@ -6,7 +6,8 @@ var lastChosenPlace = {
   lng: null,
   name: null
 };
-var myPlaces =[];
+var myPlaces = [];
+var distance = 0;
 
 
 // Map display & get URL key & turn autocomplete on
@@ -117,45 +118,45 @@ var addPlace = function(key) {
     $newPlace.append($newDate);
     $('#tripform').append($newPlace);
     addPin(stop.lat,stop.lng,stop.name);
+    var obj = {};
+    obj['date'] = stop.arrived_at;
+    obj['country'] = stop.name;
+    obj['lat'] = stop.lat;
+    obj['lng'] = stop.lng;
+    myPlaces.push(obj);
     makePieChart(stop.lat,stop.lng,stop.name,stop.arrived_at);
   });
 }
 
-
-
-
-
 var makePieChart = function(lat,long,name,date) {
   // clears chart every time a new city is added
   $('#chart').empty();
+  $('#barchart').empty();
   var newarray =[];
   for(var i=0;i<myPlaces.length;i++) {
     var oneDay = 24*60*60*1000;
     // creates date object
-    firstDate = myPlaces[i].date.split("-").reverse().join("-");
+    firstDate = myPlaces[i].date;
     firstDateObj = new Date(firstDate);
-    var object = {};
     if (myPlaces[i+1] == undefined) {
-      var today = new Date();
-      var secondDate = today.getDate()+"-" + (today.getMonth()+1)+"-" + today.getFullYear();
-      var newSecondDate = secondDate.split("-").reverse().join("-");
-      var secondDateObj = new Date(newSecondDate);
     }
     else {
-      var secondDate = myPlaces[i+1].date.split("-").reverse().join("-");
+      var secondDate = myPlaces[i+1].date;
       var secondDateObj = new Date(secondDate);
-      // calculate no. of days
+        // calculate no. of days
+      var diffDays = Math.round(Math.abs((secondDateObj.getTime() - firstDateObj.getTime())/(oneDay)));
+      var object = {};
+      object['country'] = myPlaces[i].country;
+      object['count'] = diffDays;
+      newarray.push(object);
+      distance = distance + calcCrow(myPlaces[i].lat,myPlaces[i].lng,myPlaces[i+1].lat,myPlaces[i+1].lng);
     }
-    var diffDays = Math.round(Math.abs((secondDateObj.getTime() - firstDateObj.getTime())/(oneDay)));
-    object['country'] = myPlaces[i].country;
-    object['count'] = diffDays;
-    newarray.push(object);
     console.log(newarray);
   }
     var width = 360;
     var height = 360;
     var radius = Math.min(width, height) / 2;
-    var color = d3.scale.ordinal().range(['#A60F2B', '#648C85', '#B3F2C9', '#528C18', '#C3F25C']);
+    var color = d3.scale.ordinal().range(['#A60F2B', '#B3F2C9', '#528C18', '#C3F25C']);
     var svg = d3.select('#chart')
                 .append('svg')
                 .attr('width', width)
@@ -169,26 +170,33 @@ var makePieChart = function(lat,long,name,date) {
                   .enter()
                   .append('path')
                   .attr('d', arc)
-                  .attr('fill', function(d, i) {
-                    return color(d.data.country);
+                  .attr('fill', function(d) {
+                    console.log(d);
+                    return color(d.country);
                   });
-    var circle = d3.select("body")
-                   .append("svg")
-                   .attr('width', 100)
-                   .attr('height', 100)
-                   .selectAll('g')
-                   .data(newarray)
-                   .enter()
-                   .append('g')
-                   .append('circle')
-                   .attr('cx',20)
-                   .attr('cy',20)
-                   .attr('r',5)
-                   .attr('fill', function(d) {
-                     console.log(d);
-                     return color(d.country); })
-                   .text(function(d) {
-                     return d.country;
-                   });
+    var svg1 = d3.select('#barchart')
+                .append('svg')
+                .attr('width', 1000)
+                .attr('height', height);
+    var bar = svg1.append('rect')
+                  .attr('height',50)
+                  .attr('width',distance/100);
 
+
+}
+function calcCrow(lat1, lon1, lat2, lon2) {
+    var R = 6371; // km
+    var dLat = toRad(lat2-lat1);
+    var dLon = toRad(lon2-lon1);
+    var lat1 = toRad(lat1);
+    var lat2 = toRad(lat2);
+
+    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    var d = R * c;
+    return d;
+}
+function toRad(Value) {
+    return Value * Math.PI / 180;
 }
