@@ -151,12 +151,11 @@ var makePieChart = function(lat,long,name,date) {
       newarray.push(object);
       distance = distance + calcCrow(myPlaces[i].lat,myPlaces[i].lng,myPlaces[i+1].lat,myPlaces[i+1].lng);
     }
-    console.log(newarray);
   }
     var width = 360;
     var height = 360;
     var radius = Math.min(width, height) / 2;
-    var color = d3.scale.ordinal().range(['#A60F2B', '#B3F2C9', '#528C18', '#C3F25C']);
+    var color = d3.scale.ordinal().range(['#2ca02c','#5254a3','#1f77b4','#9c9ede','#a55194','#e7ba52','#bcbddc','#A60F2B', '#B3F2C9', '#528C18', '#C3F25C']);
     var svg = d3.select('#chart')
                 .append('svg')
                 .attr('width', width)
@@ -170,9 +169,8 @@ var makePieChart = function(lat,long,name,date) {
                   .enter()
                   .append('path')
                   .attr('d', arc)
-                  .attr('fill', function(d) {
-                    console.log(d);
-                    return color(d.country);
+                  .attr('fill', function(d,i) {
+                    return color(i);
                   });
     var svg1 = d3.select('#barchart')
                 .append('svg')
@@ -180,7 +178,7 @@ var makePieChart = function(lat,long,name,date) {
                 .attr('height', height);
     var bar = svg1.append('rect')
                   .attr('height',50)
-                  .attr('width',distance/100);
+                  .attr('width',distance/500);
 
 
 }
