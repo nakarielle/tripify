@@ -5,15 +5,19 @@
 }
 .left-panel {
 	background-color: grey;
-	width: 40%;
-
+	flex: 1.6 0 0;
+	overflow: scroll;
+	height: 100vh;
 }
 .right-panel {
 	display: flex;
 	flex-direction: column;
-	flex: 3 0 0; 
+	flex: 4.5 0 0;
 }
-.map, .graph {
+.map {
+	flex: 1 0 0; 
+}
+.graph {
 		flex: 1 0 0; 
 }
 #map {
@@ -21,5 +25,5 @@
     top: 0;
     right: 0;
     width: 100%;
-    height: 50vh
+    height: 70vh
 }
