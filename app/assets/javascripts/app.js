@@ -219,7 +219,7 @@ var makePieChart = function(lat,lng,name,date) {
       distance = distance + calcCrow(myPlaces[i].lat,myPlaces[i].lng,myPlaces[i+1].lat,myPlaces[i+1].lng);
     }
   }
-    var width = 300;
+    var width = ($(document.body).height() * .3);
     // changed height to 30% of total height of window
     var height = ($(document.body).height() * .3);
     var radius = Math.min(width, height) / 3;
@@ -229,7 +229,7 @@ var makePieChart = function(lat,lng,name,date) {
                 .attr('width', width)
                 .attr('height', height)
                 .append('g')
-                .attr('transform', 'translate('+ ((width/4)+25)  +',' + ((height/3)+25) + ')');
+                .attr('transform', 'translate('+ ((width/3)+35)  +',' + ((height/3)+35) + ')');
     var arc = d3.svg.arc().outerRadius(radius).innerRadius(30);
     var text = svg.append("text");
     var arcout = d3.svg.arc().outerRadius(radius+10).innerRadius(20);
@@ -271,7 +271,7 @@ var makePieChart = function(lat,lng,name,date) {
                   .attr("startOffset",'.05');
     var svg1 = d3.select('#barchart')
                 .append('svg')
-                .attr('width', 1000)
+                .attr('width', width*3)
                 .attr('height', height);
     var bar = svg1.append("g").append('rect')
                   .attr('height',50)
