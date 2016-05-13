@@ -43,11 +43,17 @@ $(document).ready(function() {
   addSavedData(tripId);
 });
 
+
 var displayModal = function(trip) {
   $('#modal-content').toggleClass('active');
   var $displayUrl = $('<div>').text('Your saved trip page: http://localhost:3000/' + trip.disp_url);
   var $editUrl = $('<div>').text('To edit your trip later: http://localhost:3000/' + trip.edit_url);
-  $('#modal-heading').append($displayUrl).append($editUrl);
+  var $closeBtn = $('<button>').text('Close').addClass('button', 'icon', 'plus', 'loud');
+  $($closeBtn).on('click', function() {
+    $('#modal-content').toggleClass('active');
+    $('#modal-text').empty();
+  })
+  $('#modal-text').append($displayUrl).append($editUrl).append($closeBtn);
 }
 
 //date picker widget
