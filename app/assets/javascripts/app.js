@@ -76,8 +76,17 @@ var addSavedData = function(id) {
     stops.forEach(function(stop) {
       addPin(stop.lat,stop.lng,stop.name);
       makePieChart(stop.lat,stop.lng,stop.name,stop.arrived_at);
-    var $place = $('<p>').text(stop.name + ' ' + stop.arrived_at.split("-").reverse().join("/"));
-    $('#triplist').append($place);
+    // var $place = $('<p>').text(stop.name + ' ' + stop.arrived_at.split("-").reverse().join("/"));
+    // $('#triplist').append($place);
+
+    //display text for place
+    var $tablerow = $('<tr>');
+    var $newPlace = $('<td>').text(stop.name);
+    var $newDate = $('<td>').text(' ' + stop.arrived_at.split("-").reverse().join("/"));
+    $tablerow.append($newPlace).append($newDate);
+
+    $('#table-stop').append($tablerow);
+    console.log($newPlace);
     })
   })
 }
@@ -142,10 +151,13 @@ var addPlace = function(tripId) {
 
   $.ajax(settings).done(function(stop) {
     //display text for place
-    var $newPlace = $('<p>').text(stop.name);
-    var $newDate = $('<span>').text(' ' + stop.arrived_at.split("-").reverse().join("/"));
-    $newPlace.append($newDate);
-    $('#tripform').append($newPlace);
+    var $tablerow = $('<tr>');
+    var $newPlace = $('<td>').text(stop.name);
+    var $newDate = $('<td>').text(' ' + stop.arrived_at.split("-").reverse().join("/"));
+    $tablerow.append($newPlace).append($newDate);
+
+    $('#table-stop').append($tablerow);
+    console.log($newPlace);
 
     addPin(stop.lat,stop.lng,stop.name);
     makePieChart(stop.lat,stop.lng,stop.name,stop.arrived_at);
