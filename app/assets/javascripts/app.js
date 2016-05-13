@@ -14,7 +14,6 @@ var distance = 0;
 
 // Map display & get URL key & turn autocomplete on
 $(document).ready(function() {
-  getUrl();
 
   L.mapbox.accessToken = mapAccessKey;
   tripifyMap = L.mapbox.map('map', 'mapbox.streets').setView([20, 20], 2);
@@ -27,14 +26,16 @@ $(document).ready(function() {
   // tripifyMap.
   $("#placefinder").easyAutocomplete(options);
   $('#addplace').on('click', function() {
+    tripObject == undefined ?  getUrl(): console.log("new trip already generated");
     addPlace(tripId);
     console.log(tripObject.disp_url);
-    $('#url-info').append($('<p>').text("Display Only Url : " + tripObject.disp_url))
+    // $('#url-info').append($('<p>').text("Display Only Url : " + tripObject.disp_url))
     $('#saveBtn').show();
   });
   $('#saveBtn').on('click', function() {
     displayModal(tripObject);
   }); 
+  addSavedData(tripId);
 });
 
 var displayModal = function(trip) {
@@ -94,8 +95,17 @@ var addSavedData = function(id) {
     stops.forEach(function(stop) {
       addPin(stop.lat,stop.lng,stop.name);
       makePieChart(stop.lat,stop.lng,stop.name,stop.arrived_at);
-    var $place = $('<p>').text(stop.name + ' ' + stop.arrived_at.split("-").reverse().join("/"));
-    $('#triplist').append($place);
+    // var $place = $('<p>').text(stop.name + ' ' + stop.arrived_at.split("-").reverse().join("/"));
+    // $('#triplist').append($place);
+
+    //display text for place
+    var $tablerow = $('<tr>');
+    var $newPlace = $('<td>').text(stop.name);
+    var $newDate = $('<td>').text(' ' + stop.arrived_at.split("-").reverse().join("/"));
+    $tablerow.append($newPlace).append($newDate);
+
+    $('#table-stop').append($tablerow);
+    console.log($newPlace);
     })
   })
 }
@@ -143,25 +153,30 @@ var getUrl = function() {
     editUrl = trip.edit_url;
     tripId = trip.id;
     tripObject = trip;
+    // display Url on the page , the modal is diplaying the urls so not needed anymore
+    // $('#url-info').append($('<p>').text("Display Only Url : " + tripObject.disp_url))
   });
 }
 
 
 
-var addPlace = function(key) {
+var addPlace = function(tripId) {
 
   var settings = {
-    url: '/trip/' + key,
+    url: '/trip/' + tripId,
     data: {name: lastChosenPlace.name, lng: lastChosenPlace.lng, lat: lastChosenPlace.lat, arrived_at: $('#datepicker').val() },
     method: 'post'
   }
 
   $.ajax(settings).done(function(stop) {
     //display text for place
-    var $newPlace = $('<p>').text(stop.name);
-    var $newDate = $('<span>').text(' ' + stop.arrived_at.split("-").reverse().join("/"));
-    $newPlace.append($newDate);
-    $('#tripform').append($newPlace);
+    var $tablerow = $('<tr>');
+    var $newPlace = $('<td>').text(stop.name);
+    var $newDate = $('<td>').text(' ' + stop.arrived_at.split("-").reverse().join("/"));
+    $tablerow.append($newPlace).append($newDate);
+
+    $('#table-stop').append($tablerow);
+    console.log($newPlace);
 
     addPin(stop.lat,stop.lng,stop.name);
     makePieChart(stop.lat,stop.lng,stop.name,stop.arrived_at);
