@@ -28,6 +28,21 @@ body {
     flex-direction: column;
 }
 
+
 #saveBtn {
   display: none;
+
+
+
+h1,
+h2,
+h3, 
+h4{
+  display: inherit;
+  justify-content: inherit;
+}
+
+.title {
+  flex-direction: column;
+display
 }
