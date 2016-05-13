@@ -32,7 +32,6 @@ $(document).ready(function() {
      console.log(tripObject.disp_url);
     }
     
-    // $('#url-info').append($('<p>').text("Display Only Url : " + tripObject.disp_url))
     $('#saveBtn').show();
 
     console.log($('#saveBtn'));
@@ -55,8 +54,6 @@ var displayModal = function(trip) {
   })
   $('#modal-text').append($displayUrl).append($editUrl).append($closeBtn);
 }
-
-
 
 
 //date picker widget
