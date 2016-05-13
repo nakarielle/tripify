@@ -28,11 +28,13 @@ body {
     flex-direction: column;
 }
 
-
 #saveBtn {
   display: none;
-
-
+}
+/*.ui-widget {
+  border: 1px solid black;
+  background-color: white;
+}*/
 
 h1,
 h2,
@@ -44,5 +46,4 @@ h4{
 
 .title {
   flex-direction: column;
-display
 }

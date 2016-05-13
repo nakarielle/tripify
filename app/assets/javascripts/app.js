@@ -28,9 +28,14 @@ $(document).ready(function() {
   $('#addplace').on('click', function() {
     tripObject == undefined ?  getUrl(): console.log("new trip already generated");
     addPlace(tripId);
-    console.log(tripObject.disp_url);
+    if (tripObject != undefined) {
+     console.log(tripObject.disp_url);
+    }
+    
     // $('#url-info').append($('<p>').text("Display Only Url : " + tripObject.disp_url))
     $('#saveBtn').show();
+
+    console.log($('#saveBtn'));
   });
   $('#saveBtn').on('click', function() {
     displayModal(tripObject);
