@@ -30,15 +30,31 @@ $(document).ready(function() {
     addPlace(tripId);
     console.log(tripObject.disp_url);
     $('#url-info').append($('<p>').text("Display Only Url : " + tripObject.disp_url))
+    $('#saveBtn').show();
   });
+  $('#saveBtn').on('click', function() {
+    displayModal(tripObject);
+  }); 
 });
+
+var displayModal = function(trip) {
+  $('#modal-content').toggleClass('active');
+  var $displayUrl = $('<div>').text('Your saved trip page: http://localhost:3000/' + trip.disp_url);
+  var $editUrl = $('<div>').text('To edit your trip later: http://localhost:3000/' + trip.edit_url);
+  $('#modal-heading').append($displayUrl).append($editUrl);
+}
+
+
+
 
 //date picker widget
 $(function() {
   $("#datepicker").datepicker({
   dateFormat: "dd-mm-yy",
   changeMonth: true,
-  changeYear: true
+  changeYear: true,
+  yearRange: "1960:2020"
+
   })
 });
 
@@ -65,6 +81,8 @@ var addPin = function(lat,lng,name) {
   var pinLayer = L.mapbox.featureLayer().addTo(tripifyMap);
   pinLayer.setGeoJSON(geojson);
 };
+
+
 
 //display page
 var addSavedData = function(id) {
@@ -281,3 +299,6 @@ function calcCrow(lat1, lon1, lat2, lon2) {
 function toRad(Value) {
     return Value * Math.PI / 180;
 }
+
+
+
