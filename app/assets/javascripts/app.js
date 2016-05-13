@@ -216,18 +216,18 @@ var makePieChart = function(lat,lng,name,date) {
   }
     var width = 300;
     // changed height to 30% of total height of window
-    var height = $(document.body).height();
-    var radius = Math.min(width, height) / 4;
+    var height = ($(document.body).height() * .3);
+    var radius = Math.min(width, height) / 3;
     var color = d3.scale.ordinal().range(['#2ca02c','#5254a3','#1f77b4','#9c9ede','#a55194','#e7ba52','#bcbddc','#A60F2B', '#B3F2C9', '#528C18', '#C3F25C']);
     var svg = d3.select('#chart')
                 .append('svg')
                 .attr('width', width)
                 .attr('height', height)
                 .append('g')
-                .attr('transform', 'translate('+ ((width/4)+25)  +',' + (height/6)  + ')');
+                .attr('transform', 'translate('+ ((width/4)+25)  +',' + ((height/3)+25) + ')');
     var arc = d3.svg.arc().outerRadius(radius).innerRadius(30);
     var text = svg.append("text");
-    var arcout = d3.svg.arc().outerRadius(radius+20).innerRadius(30);
+    var arcout = d3.svg.arc().outerRadius(radius+10).innerRadius(20);
     var pie = d3.layout.pie().value(function(d) {console.log(d); return d.count; });
     var animation = d3.interpolate(function(d) {console.log(d); return d.count; });
     var path = svg.selectAll('path')
