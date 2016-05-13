@@ -163,8 +163,6 @@ var getUrl = function() {
   });
 }
 
-
-
 var addPlace = function(tripId) {
 
   var settings = {
