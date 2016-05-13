@@ -15,27 +15,32 @@ var distance = 0;
 // Map display & get URL key & turn autocomplete on
 $(document).ready(function() {
 
- L.mapbox.accessToken = mapAccessKey;
- tripifyMap = L.mapbox.map('map', 'mapbox.streets').setView([20, 20], 2);
- // Disable drag and zoom handlers.
- tripifyMap.dragging.disable();
- tripifyMap.touchZoom.disable();
- tripifyMap.doubleClickZoom.disable();
- tripifyMap.scrollWheelZoom.disable();
- tripifyMap.keyboard.disable();
- // tripifyMap.
- $("#placefinder").easyAutocomplete(options);
- $('#addplace').on('click', function() {
-   tripObject == undefined ?  getUrl(): console.log("new trip already generated");
-   addPlace(tripId);
-  //  console.log(tripObject.disp_url);
-   // $('#url-info').append($('<p>').text("Display Only Url : " + tripObject.disp_url))
-   $('#saveBtn').show();
- });
- $('#saveBtn').on('click', function() {
-   displayModal(tripObject);
- });
- addSavedData(tripId);
+  L.mapbox.accessToken = mapAccessKey;
+  tripifyMap = L.mapbox.map('map', 'mapbox.streets').setView([20, 20], 2);
+  // Disable drag and zoom handlers.
+  tripifyMap.dragging.disable();
+  tripifyMap.touchZoom.disable();
+  tripifyMap.doubleClickZoom.disable();
+  tripifyMap.scrollWheelZoom.disable();
+  tripifyMap.keyboard.disable();
+  // tripifyMap.
+  $("#placefinder").easyAutocomplete(options);
+  $('#addplace').on('click', function() {
+    tripObject == undefined ?  getUrl(): console.log("new trip already generated");
+    addPlace(tripId);
+    if (tripObject != undefined) {
+     console.log(tripObject.disp_url);
+    }
+
+    // $('#url-info').append($('<p>').text("Display Only Url : " + tripObject.disp_url))
+    $('#saveBtn').show();
+
+    console.log($('#saveBtn'));
+  });
+  $('#saveBtn').on('click', function() {
+    displayModal(tripObject);
+  });
+  addSavedData(tripId);
 });
 
 var displayModal = function(trip) {
