@@ -41,7 +41,7 @@
     width: 100%;
     height: 70vh
 }
-/*removing margin from jquerry date picker*/
+/*removing margin from jquery date picker*/
 #datepickerDiv input {
 	margin: 0;
 }

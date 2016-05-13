@@ -28,11 +28,6 @@ body {
     flex-direction: column;
 }
 
-/*.ui-widget {
-  border: 1px solid black;
-  background-color: white;
+#saveBtn {
+  display: none;
 }
-
-.ui-widget-header {
-  background-color: grey;
-}*/
