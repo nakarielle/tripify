@@ -42,7 +42,7 @@ input {
 
 h1,
 h2,
-h3, 
+h3,
 h4{
   display: inherit;
   justify-content: inherit;
@@ -50,6 +50,14 @@ h4{
 
 .title {
   flex-direction: column;
+}
+
+#chart,
+#barchart {
+  display: inline-block;
+}
+.graph {
+  background-color: #eee;
 }
 .description {
   padding: 0 1em 1em;

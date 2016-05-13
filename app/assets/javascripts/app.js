@@ -31,7 +31,7 @@ $(document).ready(function() {
     if (tripObject != undefined) {
      console.log(tripObject.disp_url);
     }
-    
+
     // $('#url-info').append($('<p>').text("Display Only Url : " + tripObject.disp_url))
     $('#saveBtn').show();
 
@@ -39,7 +39,7 @@ $(document).ready(function() {
   });
   $('#saveBtn').on('click', function() {
     displayModal(tripObject);
-  }); 
+  });
   addSavedData(tripId);
 });
 
@@ -55,9 +55,6 @@ var displayModal = function(trip) {
   })
   $('#modal-text').append($displayUrl).append($editUrl).append($closeBtn);
 }
-
-
-
 
 //date picker widget
 $(function() {
@@ -226,19 +223,20 @@ var makePieChart = function(lat,lng,name,date) {
       distance = distance + calcCrow(myPlaces[i].lat,myPlaces[i].lng,myPlaces[i+1].lat,myPlaces[i+1].lng);
     }
   }
-    var width = 400;
-    var height = 400;
-    var radius = Math.min(width, height) / 4;
+    var width = ($(document.body).height() * .3);
+    // changed height to 30% of total height of window
+    var height = ($(document.body).height() * .3);
+    var radius = Math.min(width, height) / 3;
     var color = d3.scale.ordinal().range(['#2ca02c','#5254a3','#1f77b4','#9c9ede','#a55194','#e7ba52','#bcbddc','#A60F2B', '#B3F2C9', '#528C18', '#C3F25C']);
     var svg = d3.select('#chart')
                 .append('svg')
                 .attr('width', width)
                 .attr('height', height)
                 .append('g')
-                .attr('transform', 'translate(' + (width / 2) +  ',' + (height / 2) + ')');
+                .attr('transform', 'translate('+ ((width/3)+35)  +',' + ((height/3)+35) + ')');
     var arc = d3.svg.arc().outerRadius(radius).innerRadius(30);
     var text = svg.append("text");
-    var arcout = d3.svg.arc().outerRadius(radius+50).innerRadius(30);
+    var arcout = d3.svg.arc().outerRadius(radius+10).innerRadius(20);
     var pie = d3.layout.pie().value(function(d) {console.log(d); return d.count; });
     var animation = d3.interpolate(function(d) {console.log(d); return d.count; });
     var path = svg.selectAll('path')
@@ -277,13 +275,11 @@ var makePieChart = function(lat,lng,name,date) {
                   .attr("startOffset",'.05');
     var svg1 = d3.select('#barchart')
                 .append('svg')
-                .attr('width', 1000)
-                .attr('height', 120);
+                .attr('width', width*3)
+                .attr('height', height);
     var bar = svg1.append("g").append('rect')
                   .attr('height',50)
-                  .attr('width',distance/500)
-                  .transition().delay(3)
-                  .duration(300)
+                  .attr('width',distance/300)
                   .style('fill',function() {
                     if (distance<30000)
                     {
@@ -301,9 +297,16 @@ var makePieChart = function(lat,lng,name,date) {
                        .attr("font-size", "30px")
                        .attr("transform", 'translate(10,80)')
                        .text(function() {
-                         if (myPlaces.length >=2)
-                         return Math.floor(distance) + " Kms"
+                         if (myPlaces.length >=2) {
+                         return Math.floor(distance) + " Kms";}
                        });
+    var text = svg1.append("text")
+                   .text(function() {
+                     if (myPlaces.length >=2) {
+                     return "Km's Travelled"}
+                   })
+                   .attr('transform','translate(20,40)');
+    var transform = bar.attr('transform','translate(30,100)');
 
 }
 
@@ -323,6 +326,3 @@ function calcCrow(lat1, lon1, lat2, lon2) {
 function toRad(Value) {
     return Value * Math.PI / 180;
 }
-
-
-
