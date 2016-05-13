@@ -26,8 +26,13 @@ $(document).ready(function() {
   // tripifyMap.
   $("#placefinder").easyAutocomplete(options);
   $('#addplace').on('click', function() {
-    tripObject == undefined ?  getUrl(): console.log("new trip already generated");
-    addPlace(tripId);
+    if (tripObject == undefined){
+      getUrl()
+    } else {
+      console.log("new trip already generated");
+      addPlace(tripId);
+    }
+
     if (tripObject != undefined) {
      console.log(tripObject.disp_url);
     }
@@ -166,6 +171,7 @@ var getUrl = function() {
     tripObject = trip;
     // display Url on the page , the modal is diplaying the urls so not needed anymore
     // $('#url-info').append($('<p>').text("Display Only Url : " + tripObject.disp_url))
+    addPlace(tripId);
   });
 }
 
