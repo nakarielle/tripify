@@ -275,9 +275,7 @@ var makePieChart = function(lat,lng,name,date) {
                 .attr('height', height);
     var bar = svg1.append("g").append('rect')
                   .attr('height',50)
-                  .attr('width',distance/500)
-                  .transition().delay(3)
-                  .duration(300)
+                  .attr('width',distance/300)
                   .style('fill',function() {
                     if (distance<30000)
                     {
@@ -295,13 +293,16 @@ var makePieChart = function(lat,lng,name,date) {
                        .attr("font-size", "30px")
                        .attr("transform", 'translate(10,80)')
                        .text(function() {
-                         if (myPlaces.length >=2)
-                         return Math.floor(distance) + " Kms";
+                         if (myPlaces.length >=2) {
+                         return Math.floor(distance) + " Kms";}
                        });
     var text = svg1.append("text")
-                   .text("Km's Travelled")
+                   .text(function() {
+                     if (myPlaces.length >=2) {
+                     return "Km's Travelled"}
+                   })
                    .attr('transform','translate(20,40)');
-    var transform = bar.attr('transform','translate(20,50)');
+    var transform = bar.attr('transform','translate(30,100)');
 
 }
 
