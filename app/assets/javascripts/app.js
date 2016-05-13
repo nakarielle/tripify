@@ -260,8 +260,13 @@ var makePieChart = function(lat,lng,name,date) {
                        .attr("transform", 'translate(10,80)')
                        .text(function() {
                          if (myPlaces.length >=2)
-                         return Math.floor(distance) + " Kms"
+                         return Math.floor(distance) + " Kms";
                        });
+                .attr('height', height);
+    var text = svg1.append("text")
+                   .text("Km's Travelled")
+                   .attr('transform','translate(20,40)');
+    var transform = bar.attr('transform','translate(20,50)');
 
 }
 
