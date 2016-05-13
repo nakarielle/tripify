@@ -14,27 +14,28 @@ var distance = 0;
 
 // Map display & get URL key & turn autocomplete on
 $(document).ready(function() {
-  getUrl();
 
-  L.mapbox.accessToken = mapAccessKey;
-  tripifyMap = L.mapbox.map('map', 'mapbox.streets').setView([20, 20], 2);
-  // Disable drag and zoom handlers.
-  tripifyMap.dragging.disable();
-  tripifyMap.touchZoom.disable();
-  tripifyMap.doubleClickZoom.disable();
-  tripifyMap.scrollWheelZoom.disable();
-  tripifyMap.keyboard.disable();
-  // tripifyMap.
-  $("#placefinder").easyAutocomplete(options);
-  $('#addplace').on('click', function() {
-    addPlace(tripId);
-    console.log(tripObject.disp_url);
-    $('#url-info').append($('<p>').text("Display Only Url : " + tripObject.disp_url))
-    $('#saveBtn').show();
-  });
-  $('#saveBtn').on('click', function() {
-    displayModal(tripObject);
-  });
+ L.mapbox.accessToken = mapAccessKey;
+ tripifyMap = L.mapbox.map('map', 'mapbox.streets').setView([20, 20], 2);
+ // Disable drag and zoom handlers.
+ tripifyMap.dragging.disable();
+ tripifyMap.touchZoom.disable();
+ tripifyMap.doubleClickZoom.disable();
+ tripifyMap.scrollWheelZoom.disable();
+ tripifyMap.keyboard.disable();
+ // tripifyMap.
+ $("#placefinder").easyAutocomplete(options);
+ $('#addplace').on('click', function() {
+   tripObject == undefined ?  getUrl(): console.log("new trip already generated");
+   addPlace(tripId);
+  //  console.log(tripObject.disp_url);
+   // $('#url-info').append($('<p>').text("Display Only Url : " + tripObject.disp_url))
+   $('#saveBtn').show();
+ });
+ $('#saveBtn').on('click', function() {
+   displayModal(tripObject);
+ });
+ addSavedData(tripId);
 });
 
 var displayModal = function(trip) {
@@ -43,9 +44,6 @@ var displayModal = function(trip) {
   var $editUrl = $('<div>').text('To edit your trip later: http://localhost:3000/' + trip.edit_url);
   $('#modal-heading').append($displayUrl).append($editUrl);
 }
-
-
-
 
 //date picker widget
 $(function() {
@@ -94,8 +92,17 @@ var addSavedData = function(id) {
     stops.forEach(function(stop) {
       addPin(stop.lat,stop.lng,stop.name);
       makePieChart(stop.lat,stop.lng,stop.name,stop.arrived_at);
-    var $place = $('<p>').text(stop.name + ' ' + stop.arrived_at.split("-").reverse().join("/"));
-    $('#triplist').append($place);
+    // var $place = $('<p>').text(stop.name + ' ' + stop.arrived_at.split("-").reverse().join("/"));
+    // $('#triplist').append($place);
+
+    //display text for place
+    var $tablerow = $('<tr>');
+    var $newPlace = $('<td>').text(stop.name);
+    var $newDate = $('<td>').text(' ' + stop.arrived_at.split("-").reverse().join("/"));
+    $tablerow.append($newPlace).append($newDate);
+
+    $('#table-stop').append($tablerow);
+    console.log($newPlace);
     })
   })
 }
@@ -143,25 +150,30 @@ var getUrl = function() {
     editUrl = trip.edit_url;
     tripId = trip.id;
     tripObject = trip;
+    // display Url on the page , the modal is diplaying the urls so not needed anymore
+    // $('#url-info').append($('<p>').text("Display Only Url : " + tripObject.disp_url))
   });
 }
 
 
 
-var addPlace = function(key) {
+var addPlace = function(tripId) {
 
   var settings = {
-    url: '/trip/' + key,
+    url: '/trip/' + tripId,
     data: {name: lastChosenPlace.name, lng: lastChosenPlace.lng, lat: lastChosenPlace.lat, arrived_at: $('#datepicker').val() },
     method: 'post'
   }
 
   $.ajax(settings).done(function(stop) {
     //display text for place
-    var $newPlace = $('<p>').text(stop.name);
-    var $newDate = $('<span>').text(' ' + stop.arrived_at.split("-").reverse().join("/"));
-    $newPlace.append($newDate);
-    $('#tripform').append($newPlace);
+    var $tablerow = $('<tr>');
+    var $newPlace = $('<td>').text(stop.name);
+    var $newDate = $('<td>').text(' ' + stop.arrived_at.split("-").reverse().join("/"));
+    $tablerow.append($newPlace).append($newDate);
+
+    $('#table-stop').append($tablerow);
+    console.log($newPlace);
 
     addPin(stop.lat,stop.lng,stop.name);
     makePieChart(stop.lat,stop.lng,stop.name,stop.arrived_at);
@@ -205,14 +217,14 @@ var makePieChart = function(lat,lng,name,date) {
     var width = 300;
     // changed height to 30% of total height of window
     var height = $(document.body).height();
-    var radius = Math.min(width, height) / 3;
+    var radius = Math.min(width, height) / 4;
     var color = d3.scale.ordinal().range(['#2ca02c','#5254a3','#1f77b4','#9c9ede','#a55194','#e7ba52','#bcbddc','#A60F2B', '#B3F2C9', '#528C18', '#C3F25C']);
     var svg = d3.select('#chart')
                 .append('svg')
                 .attr('width', width)
                 .attr('height', height)
                 .append('g')
-                .attr('transform', 'translate(' + (width / 2) +  ',' + (height / 2) + ')');
+                .attr('transform', 'translate('+ ((width/4)+25)  +',' + (height/6)  + ')');
     var arc = d3.svg.arc().outerRadius(radius).innerRadius(30);
     var text = svg.append("text");
     var arcout = d3.svg.arc().outerRadius(radius+20).innerRadius(30);
