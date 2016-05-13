@@ -29,7 +29,7 @@ $(document).ready(function() {
     tripObject == undefined ?  getUrl(): console.log("new trip already generated");
     addPlace(tripId);
     console.log(tripObject.disp_url);
-    $('#url-info').append($('<p>').text("Display Only Url : " + tripObject.disp_url))
+    // $('#url-info').append($('<p>').text("Display Only Url : " + tripObject.disp_url))
     $('#saveBtn').show();
   });
   $('#saveBtn').on('click', function() {
@@ -153,8 +153,8 @@ var getUrl = function() {
     editUrl = trip.edit_url;
     tripId = trip.id;
     tripObject = trip;
-    // display Url on the pag
-    $('#url-info').append($('<p>').text("Display Only Url : " + tripObject.disp_url))
+    // display Url on the page , the modal is diplaying the urls so not needed anymore
+    // $('#url-info').append($('<p>').text("Display Only Url : " + tripObject.disp_url))
   });
 }
 

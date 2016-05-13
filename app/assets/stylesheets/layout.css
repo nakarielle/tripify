@@ -14,6 +14,7 @@
 .title {
 	display: flex;
 	justify-content: center;
+	flex-direction: column;
 }
 #tripform {
 	display: flex;
@@ -21,6 +22,7 @@
 	justify-content: center;
 	flex-direction: column;
 	margin-left: 2em;
+	margin-right: 2em;
 }
 
 .right-panel {
@@ -61,4 +63,6 @@
     top: 0px;
     left: 0px;
 }
-
+table {
+	margin: .2em;
+}
