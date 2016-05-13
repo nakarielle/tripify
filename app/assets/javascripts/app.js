@@ -32,7 +32,6 @@ $(document).ready(function() {
      console.log(tripObject.disp_url);
     }
 
-    // $('#url-info').append($('<p>').text("Display Only Url : " + tripObject.disp_url))
     $('#saveBtn').show();
 
     console.log($('#saveBtn'));
@@ -46,14 +45,15 @@ $(document).ready(function() {
 
 var displayModal = function(trip) {
   $('#modal-content').toggleClass('active');
-  var $displayUrl = $('<div>').text('Your saved trip page: http://localhost:3000/' + trip.disp_url);
-  var $editUrl = $('<div>').text('To edit your trip later: http://localhost:3000/' + trip.edit_url);
+  var $displayUrl = $('<div>').text('Your saved trip page: http://tripifywdi6.herokuapp.com/' + trip.disp_url);
+  var $editUrl = $('<div>').text('To edit your trip later: http://tripifywdi6.herokuapp.com/' + trip.edit_url);
   var $closeBtn = $('<button>').text('Close').addClass('button', 'icon', 'plus', 'loud');
   $($closeBtn).on('click', function() {
     $('#modal-content').toggleClass('active');
     $('#modal-text').empty();
   })
-  $('#modal-text').append($displayUrl).append($editUrl).append($closeBtn);
+  var $emailLink = $('<a href="mailto:?subject=Your Tripify Links&amp;body=Your saved trip page: http://tripifywdi6.herokuapp.com/' + trip.disp_url +' To edit your trip later: http://tripifywdi6.herokuapp.com/' + trip.edit_url + '"><i class="fa fa-envelope fa-2x" aria-hidden="true"></i></a>');
+  $('#modal-text').append($displayUrl).append($editUrl).append($closeBtn).append($emailLink);
 }
 
 //date picker widget
