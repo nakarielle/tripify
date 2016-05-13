@@ -1,0 +1,32 @@
+<script>
+  var mapAccessKey = "<%= ENV['MAP_ACCESS_KEY'] %>";
+  // export MAP_ACCESS_KEY= in bash session & will need to enter into Heroku when deployed
+</script>
+
+<h1>Welcome to Tripify!</h1>
+
+<div id="tripform">
+
+<div id="placefinderDiv">
+<label>Destination:</label>
+<input id="placefinder"/></div>
+<div id="datepickerDiv">
+<label>Arrival Date:</label>
+<input type="text" id="datepicker" placeholder="Date" />
+<button id ="addplace">+</button>
+
+</div>
+</div>
+
+<!-- <a href="mailto:?subject=You've been Tripify'd&amp;body=Check out my recent trip! [URL]"><i class="fa fa-envelope fa-2x" aria-hidden="true"></i></a> -->
+
+<div id="map">
+
+</div>
+
+<div id="chart">
+
+</div>
+<div id="barchart">
+
+</div>
