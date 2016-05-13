@@ -184,8 +184,8 @@ var makePieChart = function(lat,lng,name,date) {
       distance = distance + calcCrow(myPlaces[i].lat,myPlaces[i].lng,myPlaces[i+1].lat,myPlaces[i+1].lng);
     }
   }
-    var width = 400;
-    var height = 400;
+    var width = 300;
+    var height = 300;
     var radius = Math.min(width, height) / 4;
     var color = d3.scale.ordinal().range(['#2ca02c','#5254a3','#1f77b4','#9c9ede','#a55194','#e7ba52','#bcbddc','#A60F2B', '#B3F2C9', '#528C18', '#C3F25C']);
     var svg = d3.select('#chart')
